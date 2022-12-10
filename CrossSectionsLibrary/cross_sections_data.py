@@ -25,6 +25,6 @@ INITIAL_total_cs = init_cross_section_npy[1]
 INITIAL_absorbt_cs = init_cross_section_npy[2]
 
 # Общая энергетическая сетка и интерполированные на ней сечения
-ENERGY_MESH = processed_cross_section_npy[0]
+ENERGY_MESH = np.array(processed_cross_section_npy[0])
 TOTAL = processed_cross_section_npy[1]
 ABSORBT = processed_cross_section_npy[2]

@@ -43,3 +43,26 @@ def ideal_transmission_function(first_material_number, second_material_number, t
     transmission[passband_left_edge+1 : passband_right_edge+1] = transmission_level
     
     return transmission
+
+
+def open_detector():
+    """
+    Возвращает пропускание детектора полного поглощения
+    """
+    number = 1
+    energy_mesh = Material(number).mesh()
+    transmission = np.ones(energy_mesh.shape[0])
+    return transmission
+
+
+def edges_indices():
+    """
+    Возвращает список индексов К скачков
+    """
+    edges = []
+    energy_mesh = Material(1).mesh('list')
+    for i in range(1, len(energy_mesh)):
+        if energy_mesh[i - 1] == energy_mesh[i]:
+            edges.append(i - 1)
+
+    return edges

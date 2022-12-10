@@ -24,7 +24,7 @@ class Material:
         if marker == 'ndarray':
             return np.array(ENERGY_MESH)
         if marker == 'list':
-            return ENERGY_MESH
+            return ENERGY_MESH.tolist()
 
 
     def cs(self, marker):
