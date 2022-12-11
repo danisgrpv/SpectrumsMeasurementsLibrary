@@ -1,13 +1,7 @@
 import numpy as np
-
-def split_into_areas(array):
-    """
-    Разделяет массив на части по три элемента
-    (нужно переделать функцию)
-    """
-    triplets_num = len(array) / 3
-    return np.array(np.split(array, triplets_num))
-
+from NumericalMethods.mesh_processing import split_into_areas, combine_areas
+from GammaRayInteractions.Materials import ENERGY_MESH
+from MeasurementInstrumentation.measurement_techniques import edges_indices
 
 def polinom_coeff(mesh_triplet):
     """
@@ -55,45 +49,29 @@ def polinom_coefficients_vectorize(split_areas):
     return np.array(list(map(polinom_coeff, split_areas)))
 
 
-def concatenate_function_list(a, b):
+def simpson_rule(function, mesh=ENERGY_MESH, function_jumps=[], regime='s'):
     """
-    Соединяет две области, сшивая точку разрыва
-    [1,2,3] [3,4,5] -> [1,2,6,4,5]
-    """
-    return a[:len(a) -1] + [a[-1] + b[0]] + b[1:]
-
-
-def concatenate_mesh_list(a, b):
-    """
-    [1,2,3] [3,4,5] -> [1,2,3,3,4,5]
-    """
-    return a[:len(a) -1] + [b[0]] + b[1:]
-
-
-def combine_areas(areas, jumps_list, mesh):
-    """
-    Возвращает энергетическую сетку для восстановления спектра и значения коэффициентов в ее узлах
+    Возвращает коэффициенты интегрирования по правилу Симпсона
     Параметры:
-        1) areas тройки значений фунции
-        2) jumps_list индексы скачков, которые нужно добавить при восстановлении
-        3) энергетическая сетка
+        1) function подынтегральная функция
+        2) mesh сетка узлов
     """
-    if isinstance(areas, np.ndarray):
-        areas = areas.tolist()
+    function_values_areas = split_into_areas(function) # подынтегральная функция разбитая на тройки
+    energy_mesh_areas = split_into_areas(mesh) # сетка интегрирования разбитая на тройки
+    # коэффициенты интерполяционного многочлена при интегрировании по правилу Симпсона
+    integration_coefficients = polinom_coefficients_vectorize(energy_mesh_areas)
+    # коэффициенты аппроксимации при интегрировании по правилу Симпсона
+    approximation_coefficients = integration_coefficients*function_values_areas
 
-    mesh_areas = split_into_areas(mesh)
-    mesh_areas = mesh_areas.tolist()
+    edges = edges_indices() # все индексы скачков
+    for ind in function_jumps:
+        edges.remove(ind) # удаление из списка скачков, которые нужно добавить при востановлении
 
-    result_f = areas[0]
-    result_m = mesh_areas[0]
-
-    for i, part in enumerate(areas):
-        if i < len(areas) - 1:
-            if mesh.tolist().index(mesh_areas[i][-1]) in jumps_list:
-                result_f = concatenate_function_list(result_f, areas[i + 1])
-                result_m = concatenate_mesh_list(result_m, mesh_areas[i + 1])
-            else:
-                result_f += areas[i + 1]
-                result_m += mesh_areas[i + 1]
-
-    return result_m, result_f
+    if regime == 's':
+        return approximation_coefficients.sum()
+    if regime == 'c':
+        approximation_coefficients = combine_areas(approximation_coefficients, edges, mesh)[1]
+        return approximation_coefficients
+    if regime == 'm':
+        approximation_mesh = combine_areas(approximation_coefficients, edges, mesh)[0]
+        return approximation_mesh

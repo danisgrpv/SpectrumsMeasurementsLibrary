@@ -1,5 +1,5 @@
 import numpy as np
-from SpectrumsMeasurementsLibrary.GammaRayInteractions.Materials import Material, R
+from GammaRayInteractions.Materials import Material, R
 
 
 def k_edge_method_transmission_function(material_number, transmission_in_k_edge):

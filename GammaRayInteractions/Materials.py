@@ -1,10 +1,10 @@
 import numpy as np
 
-from SpectrumsMeasurementsLibrary.Constants.constants import AVOGADRRO, BARN
-from SpectrumsMeasurementsLibrary.CrossSectionsLibrary.cross_sections_processing import get_edges_list
-from SpectrumsMeasurementsLibrary.CrossSectionsLibrary.cross_sections_data import INITIAL_meshs, \
+from Constants.constants import AVOGADRRO, BARN
+from CrossSectionsLibrary.cross_sections_processing import get_edges_list
+from CrossSectionsLibrary.cross_sections_data import INITIAL_meshs, \
     INITIAL_total_cs, INITIAL_absorbt_cs, ENERGY_MESH, TOTAL, ABSORBT
-from SpectrumsMeasurementsLibrary.Constants.constants import AVOGADRRO, BARN, RO, MU
+from Constants.constants import AVOGADRRO, BARN, RO, MU
 
 # функция возвращает значения сечений скачков
 get_edges = lambda number, marker: get_edges_list(number, marker, INITIAL_meshs, INITIAL_total_cs)

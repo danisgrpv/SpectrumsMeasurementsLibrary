@@ -3,7 +3,7 @@ import math
 import numpy as np
 import pandas as pd
 
-from SpectrumsMeasurementsLibrary.CrossSectionsLibrary import cross_sections_processing
+from CrossSectionsLibrary import cross_sections_processing
 from cross_sections_processing import dataframe_to_list, interpolate_with_edge_from_minimal_en
 
 # считывание данных
