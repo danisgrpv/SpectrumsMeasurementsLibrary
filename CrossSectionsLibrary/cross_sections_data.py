@@ -7,7 +7,7 @@ cross_sections_datafiles_folder_name = "CS_npy" # имя папки, в кото
 # файл с исходными сечениями np.array([CS_init_mesh, CS_total, CS_absorbt]
 init_cross_section_file_name = 'CROSS_SECTION_INIT.npy'
 # файл с обработанными сечениямиями np.array([general_grid, total_general.npy, absorbt_general.npy])
-processed_cross_section_file_name = 'CROSS_SECTION_PROCESSED_mesh_01.npy'
+processed_cross_section_file_name = 'CROSS_SECTION_PROCESSED_mesh_02.npy'
 # путь до файла с исходными сечениями
 init_cross_section_file_path = os.path.join(current_directory, cross_sections_datafiles_folder_name, init_cross_section_file_name)
 # путь до файла с обработанными сечениями
