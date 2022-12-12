@@ -25,9 +25,12 @@ def get_deviation_up_to_bound(initial_mesh, initial_spectrum, deconvolved_mesh, 
     return simpson_rule(unfolding_deviation) / simpson_rule(initial_spectrum_up_to_bound**2)
 
 
-def Gold(matrix, results, weight, initial_mesh, deconvolved_mesh, initial_spectrum, iteration_number, bound, journal=False):
+def Gold(matrix, results, weight, initial_mesh, deconvolved_mesh, initial_spectrum, iteration_number, bound, journal=False, weight_mode='value'):
     A, b = matrix, results
-    W = np.diag([float(i**weight) for i,val in enumerate(b)])
+    if weight_mode == "value":
+        W = np.diag([float(val**weight) for i,val in enumerate(b)])
+    if weight_mode == "channel":
+        W = np.diag([float(i**weight) for i,val in enumerate(b)])
     previous_x = np.ones((A.shape[1])) # начальное приближение
     current_x = np.ones((A.shape[1])) # текущее значение
 
