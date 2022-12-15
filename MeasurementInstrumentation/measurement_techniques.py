@@ -14,7 +14,7 @@ def k_edge_method_transmission_function(material_number, transmission_in_k_edge)
     return region.transmission()
 
 
-def ross_method_transmission_function(first_material_number, second_material_number, transmission_in_k_edge):
+def ross_method_transmission_function(first_material_number, second_material_number, transmission_in_k_edge, regime='different'):
     """
     Возвращает фунцию пропускания канала системы, основанной на методе фильтров Росса
     Параметры:
@@ -25,7 +25,12 @@ def ross_method_transmission_function(first_material_number, second_material_num
     second_filter_transmission_in_first_filter_k_edge = second_filter_transmission[Material(first_material_number).k_edge_index()]
     first_filter_transmission = k_edge_method_transmission_function(first_material_number, second_filter_transmission_in_first_filter_k_edge)
     
-    return second_filter_transmission - first_filter_transmission
+    if regime =='different':
+        return second_filter_transmission - first_filter_transmission
+    if regime =='first':
+        return first_filter_transmission
+    if regime == 'second':
+        return second_filter_transmission
 
 
 def ideal_transmission_function(first_material_number, second_material_number, transmission_level):
